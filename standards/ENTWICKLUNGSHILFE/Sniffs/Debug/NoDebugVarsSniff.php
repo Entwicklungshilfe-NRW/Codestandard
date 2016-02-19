@@ -15,14 +15,14 @@
  */
 class Entwicklungshilfe_Sniffs_Debug_NoDebugVarsSniff implements PHP_CodeSniffer_Sniff
 {
-    public $error = TRUE;
+    public $error = true;
 
-    protected $patternMatch = TRUE;
+    protected $patternMatch = true;
 
     protected $forbiddenFunctions = array(
-        '^var_dump$' => NULL,
-        '^die$' => NULL,
-        '^exit$' => NULL,
+        '^var_dump$' => null,
+        '^die$' => null,
+        '^exit$' => null,
     );
 
     /**
@@ -34,7 +34,7 @@ class Entwicklungshilfe_Sniffs_Debug_NoDebugVarsSniff implements PHP_CodeSniffer
     {
         $this->forbiddenFunctionNames = array_keys($this->forbiddenFunctions);
 
-        if ($this->patternMatch === TRUE) {
+        if ($this->patternMatch === true) {
             foreach ($this->forbiddenFunctionNames as $i => $name) {
                 $this->forbiddenFunctionNames[$i] = '/' . $name . '/i';
             }
@@ -74,21 +74,21 @@ class Entwicklungshilfe_Sniffs_Debug_NoDebugVarsSniff implements PHP_CodeSniffer
             T_IMPLEMENTS
         );
 
-        $prevToken = $phpcsFile->findPrevious(T_WHITESPACE, ($stackPtr - 1), NULL, TRUE);
-        if (in_array($tokens[$prevToken]['code'], $ignore) === TRUE) {
+        $prevToken = $phpcsFile->findPrevious(T_WHITESPACE, ($stackPtr - 1), null, true);
+        if (in_array($tokens[$prevToken]['code'], $ignore) === true) {
             // Not a call to a PHP function.
             return;
         }
 
-        $nextToken = $phpcsFile->findNext(T_WHITESPACE, ($stackPtr + 1), NULL, TRUE);
-        if (in_array($tokens[$nextToken]['code'], $ignore) === TRUE) {
+        $nextToken = $phpcsFile->findNext(T_WHITESPACE, ($stackPtr + 1), null, true);
+        if (in_array($tokens[$nextToken]['code'], $ignore) === true) {
             // Not a call to a PHP function.
             return;
         }
 
         $function = strtolower($tokens[$stackPtr]['content']);
-        $pattern  = NULL;
-        if ($this->patternMatch === TRUE) {
+        $pattern  = null;
+        if ($this->patternMatch === true) {
             $count   = 0;
             $pattern = preg_replace(
                 $this->forbiddenFunctionNames,
@@ -125,11 +125,11 @@ class Entwicklungshilfe_Sniffs_Debug_NoDebugVarsSniff implements PHP_CodeSniffer
      *
      * @return void
      */
-    protected function addError(PHP_CodeSniffer_File $phpcsFile, $stackPtr, $function, $pattern = NULL)
+    protected function addError(PHP_CodeSniffer_File $phpcsFile, $stackPtr, $function, $pattern = null)
     {
         $data  = array($function);
         $error = 'The use of function %s() is ';
-        if ($this->error === TRUE) {
+        if ($this->error === true) {
             $type   = 'Found';
             $error .= 'forbidden';
         } else {
@@ -137,17 +137,17 @@ class Entwicklungshilfe_Sniffs_Debug_NoDebugVarsSniff implements PHP_CodeSniffer
             $error .= 'discouraged';
         }
 
-        if ($pattern === NULL) {
+        if ($pattern === null) {
             $pattern = $function;
         }
 
-        if ($this->forbiddenFunctions[$pattern] !== NULL) {
+        if ($this->forbiddenFunctions[$pattern] !== null) {
             $type  .= 'WithAlternative';
             $data[] = $this->forbiddenFunctions[$pattern];
             $error .= '; use %s() instead';
         }
 
-        if ($this->error === TRUE) {
+        if ($this->error === true) {
             $phpcsFile->addError($error, $stackPtr, $type, $data);
         } else {
             $phpcsFile->addWarning($error, $stackPtr, $type, $data);
