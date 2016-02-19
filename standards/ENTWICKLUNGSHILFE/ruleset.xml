@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<ruleset name="WMDB">
+<ruleset name="ENTWICKLUNGSHILFENRW">
  <description>The Entwicklungshilfe coding standard for php files.</description>
 
  <!-- 1. General -->
