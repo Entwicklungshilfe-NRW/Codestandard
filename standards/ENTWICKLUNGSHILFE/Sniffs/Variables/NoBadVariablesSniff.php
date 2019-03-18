@@ -8,13 +8,18 @@
  * @link      http://www.entwicklungshilfe.nrw
  */
 
+namespace PHP_CodeSniffer\Standards\ENTWICKLUNGSHILFE\Sniffs\Variables;
+
+use PHP_CodeSniffer\Sniffs\Sniff;
+use PHP_CodeSniffer\Files\File;
+
 /**
  * Class Entwicklungshilfe_Sniffs_Examples_NoBadVariablesSniff
  *
  * This is a sniff to detect variable names that you do not want to see.
  *
  */
-class Entwicklungshilfe_Sniffs_Variables_NoBadVariablesSniff implements PHP_CodeSniffer_Sniff
+final class Entwicklungshilfe_Sniffs_Variables_NoBadVariablesSniff implements Sniff
 {
     /**
      * Returns the token types that this sniff is interested in.
@@ -31,19 +36,17 @@ class Entwicklungshilfe_Sniffs_Variables_NoBadVariablesSniff implements PHP_Code
     );
 
     /**
-     * Processes the tokens that this sniff is interested in.
-     *
-     * @param PHP_CodeSniffer_File $phpcsFile The file where the token was found
-     * @param int $stackPtr The position in the stack where the token was found
+     * @param File $phpcsFile
+     * @param int $stackPtr
+     * @return int|void
      */
-    public function process(PHP_CodeSniffer_File $phpcsFile, $stackPtr)
+    public function process(File $phpcsFile, $stackPtr)
     {
         $tokens = $phpcsFile->getTokens();
         foreach ($this->forbiddenVariables as $forbiddenVariables) {
             if (strpos($tokens[$stackPtr]['content'], $forbiddenVariables)) {
                 $phpcsFile->addError(
-                    'No bad variables. Found ' . $tokens[$stackPtr]['content'],
-                    $stackPtr
+                    'No bad variables. Found ' . $tokens[$stackPtr]['content'], $stackPtr, 'Bad variable'
                 );
             }
         }
