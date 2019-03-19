@@ -8,12 +8,17 @@
  * @link     http://www.entwicklungshilfe.nrw
  */
 
+namespace PHP_CodeSniffer\Standards\ENTWICKLUNGSHILFE\Sniffs\Debug;
+
+use PHP_CodeSniffer\Sniffs\Sniff;
+use PHP_CodeSniffer\Files\File;
+
 /**
  * Class Entwicklungshilfe_Sniffs_Debug_NoDebugVarsSniff.
  *
  * This will find debug vars in php code.
  */
-class Entwicklungshilfe_Sniffs_Debug_NoDebugVarsSniff implements PHP_CodeSniffer_Sniff
+class Entwicklungshilfe_Sniffs_Debug_NoDebugVarsSniff implements Sniff
 {
     public $error = true;
 
@@ -51,13 +56,12 @@ class Entwicklungshilfe_Sniffs_Debug_NoDebugVarsSniff implements PHP_CodeSniffer
     /**
      * Processes this test, when one of its tokens is encountered.
      *
-     * @param PHP_CodeSniffer_File $phpcsFile The file being scanned.
-     * @param int                  $stackPtr  The position of the current token in
-     *                                        the stack passed in $tokens.
+     * @param File $phpcsFile The file being scanned.
+     * @param int  $stackPtr  The position of the current token in the stack passed in $tokens.
      *
      * @return void
      */
-    public function process(PHP_CodeSniffer_File $phpcsFile, $stackPtr)
+    public function process(File $phpcsFile, $stackPtr)
     {
         $tokens = $phpcsFile->getTokens();
         $ignore = array(
@@ -117,15 +121,15 @@ class Entwicklungshilfe_Sniffs_Debug_NoDebugVarsSniff implements PHP_CodeSniffer
     /**
      * Generates the error or warning for this sniff.
      *
-     * @param PHP_CodeSniffer_File $phpcsFile The file being scanned.
-     * @param int                  $stackPtr  The position of the forbidden function
+     * @param File   $phpcsFile The file being scanned.
+     * @param int    $stackPtr  The position of the forbidden function
      *                                        in the token array.
-     * @param string               $function  The name of the forbidden function.
-     * @param string               $pattern   The pattern used for the match.
+     * @param string $function  The name of the forbidden function.
+     * @param string $pattern   The pattern used for the match.
      *
      * @return void
      */
-    protected function addError(PHP_CodeSniffer_File $phpcsFile, $stackPtr, $function, $pattern = null)
+    protected function addError(File $phpcsFile, $stackPtr, $function, $pattern = null)
     {
         $data  = array($function);
         $error = 'The use of function %s() is ';
@@ -152,6 +156,5 @@ class Entwicklungshilfe_Sniffs_Debug_NoDebugVarsSniff implements PHP_CodeSniffer
         } else {
             $phpcsFile->addWarning($error, $stackPtr, $type, $data);
         }
-
     }
 }
